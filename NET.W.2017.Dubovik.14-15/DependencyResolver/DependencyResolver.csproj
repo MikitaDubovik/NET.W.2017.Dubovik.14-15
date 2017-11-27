@@ -66,6 +66,10 @@
       <Project>{7998E984-EEEA-476F-9A27-FFBFE34D9E14}</Project>
       <Name>BLL.Interface</Name>
     </ProjectReference>
+    <ProjectReference Include="..\BLL\BLL.csproj">
+      <Project>{1D17F5A6-F1DF-4AF4-9388-E7E5BAF7A5B7}</Project>
+      <Name>BLL</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DAL.Interface\DAL.Interface.csproj">
       <Project>{0B8728F7-3459-449F-9B20-A89AD27EA695}</Project>
       <Name>DAL.Interface</Name>
@@ -73,10 +77,6 @@
     <ProjectReference Include="..\DAL\DAL.csproj">
       <Project>{284FAF07-2C2D-4111-B7DF-36A5867D2150}</Project>
       <Name>DAL</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NET.W.2017.Dubovik.14-15\BLL.csproj">
-      <Project>{1D17F5A6-F1DF-4AF4-9388-E7E5BAF7A5B7}</Project>
-      <Name>BLL</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
