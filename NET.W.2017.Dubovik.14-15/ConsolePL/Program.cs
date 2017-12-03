@@ -33,15 +33,14 @@ namespace ConsolePL
 
         private static void Test(IAccountService accountService)
         {
-            var idFirst = accountService.OpenAccount("Hello", "World", 100);
-
+            var idFirst = accountService.OpenAccount("Another", "One", 100);
             accountService.DepositMoney(idFirst, 322);
             accountService.WithdrawMoney(idFirst, 228);
             Console.WriteLine(accountService.GetAccountStatus(idFirst));
 
             Console.WriteLine();
 
-            var idSecond = accountService.OpenAccount(AccountsLevel.Platinum, "Goodbye", "Life", 444);
+            var idSecond = accountService.OpenAccount(AccountsLevel.Platinum, "Bites", "The Dust", 444);
 
             accountService.DepositMoney(idSecond, 10);
             accountService.WithdrawMoney(idSecond, 20);

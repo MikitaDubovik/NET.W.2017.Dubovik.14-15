@@ -10,10 +10,12 @@ namespace DependencyResolver
     {
         public static void Configure(IKernel kernel)
         {
-            kernel.Bind<IRepository>().To<BinaryFileRepository>()
-                .WithConstructorArgument(@"accounts.bin");
+            ////kernel.Bind<IRepository>().To<BinaryFileRepository>()
+            ////    .WithConstructorArgument(@"accounts.bin");
 
             kernel.Bind<IIdGenerator>().To<IdGenerator>();
+
+            kernel.Bind<IRepository>().To<SQLRepository>();
 
             var accountRepository = kernel.Get<IRepository>();
             var accountIdGenerator = kernel.Get<IIdGenerator>();
