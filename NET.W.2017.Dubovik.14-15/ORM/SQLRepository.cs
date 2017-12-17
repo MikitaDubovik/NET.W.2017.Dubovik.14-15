@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DAL.Interface;
 using DAL.Interface.DTO;
+using System.Data.Entity;
+using System.Linq;
 
-namespace DAL
+namespace ORM
 {
     public class SQLRepository : IRepository
     {
@@ -69,7 +67,7 @@ namespace DAL
         {
             using (var db = new BankAccountContext())
             {
-                var temp = GetAccount(account.Id);
+                var temp = GetAccount(account.AccountId);
                 if (temp == null)
                 {
                     throw new ArgumentNullException($"{nameof(account)} does not exist");

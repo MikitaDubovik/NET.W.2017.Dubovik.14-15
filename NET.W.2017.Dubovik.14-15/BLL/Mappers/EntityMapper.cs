@@ -1,4 +1,5 @@
 ﻿using System;
+using BLL.Interface.Accounts;
 using DAL.Interface.DTO;
 
 namespace NET.W._2017.Dubovik._14_15.Mappers
@@ -9,7 +10,7 @@ namespace NET.W._2017.Dubovik._14_15.Mappers
             new BankAccount
             {
                 AccountType = account.GetType().Name,
-                Id = account.Id,
+                AccountId  = account.Id,
                 OwnerFirstName = account.OwnerFirstName,
                 OwnerSecondName = account.OwnerSecondName,
                 CurrentSum = account.CurrentSum,
@@ -19,7 +20,7 @@ namespace NET.W._2017.Dubovik._14_15.Mappers
         internal static Account ToBllAccount(this BankAccount dalAccount)
         => (Account)Activator.CreateInstance(
                 Type.GetType(dalAccount.AccountType),
-                dalAccount.Id,
+                dalAccount.AccountId,
                 dalAccount.OwnerFirstName,
                 dalAccount.OwnerSecondName,
                 dalAccount.CurrentSum,

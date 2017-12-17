@@ -83,7 +83,7 @@ namespace DAL
                 throw new ArgumentException(nameof(id));
             }
 
-            return accounts.FirstOrDefault(account => account.Id == id);
+            return accounts.FirstOrDefault(account => account.AccountId == id);
         }
 
         /// <inheritdoc />
@@ -118,7 +118,7 @@ namespace DAL
                 throw new ArgumentNullException(nameof(account));
             }
 
-            if (accounts.All(dtoAccount => string.Compare(dtoAccount.Id, account.Id, StringComparison.Ordinal) != 0))
+            if (accounts.All(dtoAccount => string.Compare(dtoAccount.AccountId, account.AccountId, StringComparison.Ordinal) != 0))
             {
                 throw new ArgumentException("Account does not exists");
             }
@@ -170,7 +170,7 @@ namespace DAL
         private static void WriteAccountToFile(BinaryWriter binaryWriter, BankAccount account)
         {
             binaryWriter.Write(account.GetType().ToString());
-            binaryWriter.Write(account.Id);
+            binaryWriter.Write(account.AccountId);
             binaryWriter.Write(account.OwnerFirstName);
             binaryWriter.Write(account.OwnerSecondName);
             binaryWriter.Write(account.CurrentSum);

@@ -54,7 +54,7 @@ namespace BLL.Test
         public void AddAccountTest()
         {
             repositoryMock.Verify(
-                repository => repository.AddAccount(It.Is<BankAccount>(account => string.Equals(account.Id, ownerAccountId, StringComparison.Ordinal))), Times.Once);
+                repository => repository.AddAccount(It.Is<BankAccount>(account => string.Equals(account.AccountId, ownerAccountId, StringComparison.Ordinal))), Times.Once);
         }
 
         [Test]
@@ -69,7 +69,7 @@ namespace BLL.Test
             accountService.CloseAccount(tempId);
 
             repositoryMock.Verify(
-                repository => repository.RemoveAccount(It.Is<BankAccount>(account => string.Equals(account.Id, tempId, StringComparison.Ordinal))), Times.Once);
+                repository => repository.RemoveAccount(It.Is<BankAccount>(account => string.Equals(account.AccountId, tempId, StringComparison.Ordinal))), Times.Once);
         }
 
         [Test]
@@ -85,7 +85,7 @@ namespace BLL.Test
             accountService.WithdrawMoney(ownerAccountId, 100m);
 
             repositoryMock.Verify(
-                repository => repository.UpdateAccount(It.Is<BankAccount>(account => string.Equals(account.Id, ownerAccountId, StringComparison.Ordinal))), Times.Exactly(2));
+                repository => repository.UpdateAccount(It.Is<BankAccount>(account => string.Equals(account.AccountId, ownerAccountId, StringComparison.Ordinal))), Times.Exactly(2));
         }
 
         #endregion

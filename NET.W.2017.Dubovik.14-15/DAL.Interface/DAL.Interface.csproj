@@ -48,7 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DTO\BankAccount.cs" />
-    <Compile Include="DTO\BankAccountContext.cs" />
+    <Compile Include="DTO\OwnerAccount.cs" />
     <Compile Include="IRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

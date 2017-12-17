@@ -1,0 +1,12 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="navbar">
+    <li>@Html.ActionLink("Пополнить счет", "Deposite", "Home")</li>
+    <li>@Html.ActionLink("Снять деньги", "Withdraw", "Home")</li>
+    <li>@Html.ActionLink("Перевести деньги", "Transfer", "Home")</li>
+    <li>@Html.ActionLink("Создать новый счет", "Open", "Home")</li>
+    <li>@Html.ActionLink("Закрыть счет", "Close", "Home")</li>
+</div>
+

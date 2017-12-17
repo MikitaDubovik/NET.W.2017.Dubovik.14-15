@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NET.W._2017.Dubovik._14_15
+namespace BLL.Interface.Accounts
 {
     public abstract class Account : IComparable, IComparable<Account>, IEquatable<Account>
     {

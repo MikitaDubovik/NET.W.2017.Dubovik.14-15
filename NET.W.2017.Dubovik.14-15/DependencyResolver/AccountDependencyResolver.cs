@@ -3,6 +3,7 @@ using DAL;
 using DAL.Interface;
 using NET.W._2017.Dubovik._14_15.AccountService;
 using Ninject;
+using ORM;
 
 namespace DependencyResolver
 {

@@ -8,7 +8,7 @@ namespace DAL.Interface.DTO
         public string AccountType { get; set; }
 
         [Key]
-        public string Id { get; set; }
+        public string AccountId { get; set; }
 
         public string OwnerFirstName { get; set; }
 
@@ -18,6 +18,8 @@ namespace DAL.Interface.DTO
 
         public int BonusPoints { get; set; }
 
-        protected int BonusValue { get; set; }
+        public int BonusValue { get; set; }
+
+        public OwnerAccount OwnerAccount { get; set; }
     }
 }

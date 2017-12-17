@@ -1,6 +1,7 @@
 ﻿using System.Data.Entity;
+using DAL.Interface.DTO;
 
-namespace DAL.Interface.DTO
+namespace ORM
 {
     public class BankAccountContext : DbContext
     {
@@ -9,5 +10,6 @@ namespace DAL.Interface.DTO
         }
 
         public DbSet<BankAccount> BankAccounts { get; set; }
+        public DbSet<OwnerAccount> OwnerAccount { get; set; }
     }
 }

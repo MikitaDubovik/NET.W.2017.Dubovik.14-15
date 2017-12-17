@@ -1,4 +1,6 @@
-﻿namespace NET.W._2017.Dubovik._14_15.Levels
+﻿using BLL.Interface.Accounts;
+
+namespace NET.W._2017.Dubovik._14_15.Levels
 {
     /// <inheritdoc />
     /// <summary>
