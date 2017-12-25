@@ -1,0 +1,62 @@
+﻿@model PL.ASP.NET_MVC.Models.AccountWeb
+
+@{
+    ViewBag.Title = "OpenAccount";
+}
+
+<h2 style="margin-left: 40%;">Open account</h2>
+
+@using (Html.BeginForm("OpenAccount", "Account", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+
+    <div class="form-horizontal">
+        <hr />
+        <div style="margin-left: 30%;">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Type, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EnumDropDownListFor(model => model.Type, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Type, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.OwnerFirstName, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.OwnerFirstName, new { htmlAttributes = new { @class = "form-control", placeholder = "Marilyn" } })
+                    @Html.ValidationMessageFor(model => model.OwnerFirstName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.OwnerSecondName, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.OwnerSecondName, new { htmlAttributes = new { @class = "form-control", placeholder = "Monroe" } })
+                    @Html.ValidationMessageFor(model => model.OwnerSecondName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Sum, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Sum, new { htmlAttributes = new { @class = "form-control", placeholder = "0" } })
+                    @Html.ValidationMessageFor(model => model.Sum, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Send" class="btn btn-success" />
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -10,6 +10,6 @@ namespace ORM
         }
 
         public DbSet<BankAccount> BankAccounts { get; set; }
-        public DbSet<OwnerAccount> OwnerAccount { get; set; }
+       // public DbSet<OwnerAccount> OwnerAccount { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using BLL.Interface.Accounts;
 using DAL.Interface.DTO;
+using NET.W._2017.Dubovik._14_15.Levels;
 
 namespace NET.W._2017.Dubovik._14_15.Mappers
 {
@@ -10,7 +11,7 @@ namespace NET.W._2017.Dubovik._14_15.Mappers
             new BankAccount
             {
                 AccountType = account.GetType().Name,
-                AccountId  = account.Id,
+                AccountId = account.Id,
                 OwnerFirstName = account.OwnerFirstName,
                 OwnerSecondName = account.OwnerSecondName,
                 CurrentSum = account.CurrentSum,
@@ -18,12 +19,27 @@ namespace NET.W._2017.Dubovik._14_15.Mappers
             };
 
         internal static Account ToBllAccount(this BankAccount dalAccount)
-        => (Account)Activator.CreateInstance(
-                Type.GetType(dalAccount.AccountType),
+            => (Account) Activator.CreateInstance(
+                GetAccountType(dalAccount.AccountType),
                 dalAccount.AccountId,
                 dalAccount.OwnerFirstName,
                 dalAccount.OwnerSecondName,
                 dalAccount.CurrentSum,
                 dalAccount.BonusPoints);
+
+        private static Type GetAccountType(string type)
+        {
+            if (type.Contains("Gold"))
+            {
+                return typeof(GoldAccount);
+            }
+
+            if (type.Contains("Platinum"))
+            {
+                return typeof(PlatinumAccount);
+            }
+
+            return typeof(BaseAccount);
+        }
     }
 }

@@ -20,6 +20,6 @@ namespace DAL.Interface.DTO
 
         public int BonusValue { get; set; }
 
-        public OwnerAccount OwnerAccount { get; set; }
+       // public OwnerAccount OwnerAccount { get; set; }
     }
 }

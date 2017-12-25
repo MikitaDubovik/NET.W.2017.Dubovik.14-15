@@ -51,6 +51,10 @@ namespace ConsolePL
 
         private static void Test(string otherIdFirst, string otherIdSecond, IAccountService accountService)
         {
+            foreach (var account in accountService.GetAccounts())
+            {
+                Console.WriteLine(account.OwnerFirstName);
+            }
             var idFirst = otherIdFirst;
             var idSecond = otherIdSecond;
             Console.WriteLine("After searching");

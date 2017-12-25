@@ -1,4 +1,5 @@
-﻿using BLL.Interface.Accounts;
+﻿using System.Collections.Generic;
+using BLL.Interface.Accounts;
 
 namespace NET.W._2017.Dubovik._14_15.AccountService
 {
@@ -52,5 +53,17 @@ namespace NET.W._2017.Dubovik._14_15.AccountService
         /// <param name="accountId">Account id</param>
         /// <returns>Information about an account</returns>
         string GetAccountStatus(string accountId);
+
+        /// <summary>
+        /// Returns informations about all accounts
+        /// </summary>
+        IEnumerable<Account> GetAccounts();
+
+        /// <summary>
+        /// Returns type of account
+        /// </summary>
+        /// <param name="id">Account's id</param>
+        /// <returns></returns>
+        string GetTypeOfAccount(string id);
     }
 }

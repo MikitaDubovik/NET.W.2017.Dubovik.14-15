@@ -48,6 +48,10 @@ namespace NET.W._2017.Dubovik._14_15.AccountService
             try
             {
                 var dalAccounts = accountRepository.GetAccounts();
+                //foreach (var dalAccount in dalAccounts)
+                //{
+                //    accounts.Add(dalAccount.ToBllAccount());
+                //}
                 accounts.AddRange(dalAccounts.Select(account => account.ToBllAccount()));
             }
             catch (Exception)
@@ -117,6 +121,26 @@ namespace NET.W._2017.Dubovik._14_15.AccountService
             }
 
             return account.ToString();
+        }
+
+        /// <inheritdoc />
+        public IEnumerable<Account> GetAccounts()
+        {
+            if (ReferenceEquals(accounts, null))
+            {
+                throw new InvalidOperationException("The data base is empty");
+            }
+
+            return accounts.ToList();
+        }
+
+        /// <inheritdoc />
+        public string GetTypeOfAccount(string id)
+        {
+            var response = (from account in accounts
+                where account.Id == id
+                select account);
+            return response.GetType().ToString();
         }
 
         #endregion 

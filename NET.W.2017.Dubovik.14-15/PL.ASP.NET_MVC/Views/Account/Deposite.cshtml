@@ -1,0 +1,23 @@
+﻿@model IEnumerable<PL.ASP.NET_MVC.Models.BankOperations>
+
+@{
+    ViewBag.Title = "Deposite";
+}
+
+<h2>Deposite</h2>
+
+@using (Html.BeginForm("Deposite", "Account", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <table>
+        @foreach (var mod in Model)
+        {
+            <tr>
+                <td>@mod.Id></td>
+                <td>@mod.Type</td>
+                <td>@mod.Sum;</td>
+            </tr>
+        }
+    </table>
+}

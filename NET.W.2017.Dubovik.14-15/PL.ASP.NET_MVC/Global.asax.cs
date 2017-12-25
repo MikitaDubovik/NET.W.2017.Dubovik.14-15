@@ -5,6 +5,9 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using Ninject;
+using Ninject.Web.Mvc;
+using PL.ASP.NET_MVC.DependencyResolver;
 
 namespace PL.ASP.NET_MVC
 {
@@ -16,6 +19,11 @@ namespace PL.ASP.NET_MVC
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            var registrations = new NinjectRegistrations();
+            var kernel = new StandardKernel(registrations);
+            kernel.Unbind<ModelValidatorProvider>();
+            System.Web.Mvc.DependencyResolver.SetResolver(new NinjectDependencyResolver(kernel));
         }
     }
 }

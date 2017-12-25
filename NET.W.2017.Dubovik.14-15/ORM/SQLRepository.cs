@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using DAL.Interface;
-using DAL.Interface.DTO;
 using System.Data.Entity;
 using System.Linq;
+using DAL.Interface;
+using DAL.Interface.DTO;
 
 namespace ORM
 {
@@ -56,10 +56,13 @@ namespace ORM
         /// <inheritdoc />
         public IEnumerable<BankAccount> GetAccounts()
         {
+            var accounts = new List<BankAccount>();
             using (var db = new BankAccountContext())
             {
-                return db.BankAccounts.AsEnumerable();
+                accounts.AddRange(db.Set<BankAccount>());
             }
+
+            return accounts;
         }
 
         /// <inheritdoc />
