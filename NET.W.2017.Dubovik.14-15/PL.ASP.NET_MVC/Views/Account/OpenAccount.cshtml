@@ -10,7 +10,6 @@
 {
     @Html.AntiForgeryToken()
 
-
     <div class="form-horizontal">
         <hr />
         <div style="margin-left: 30%;">
@@ -43,7 +42,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.Sum, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.Sum, new { htmlAttributes = new { @class = "form-control", placeholder = "0" } })
+                    @Html.EditorFor(model => model.Sum, new { htmlAttributes = new { @class = "form-control", placeholder = "100" } })
                     @Html.ValidationMessageFor(model => model.Sum, "", new { @class = "text-danger" })
                 </div>
             </div>

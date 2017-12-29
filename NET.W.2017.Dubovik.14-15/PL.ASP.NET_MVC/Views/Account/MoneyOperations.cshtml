@@ -1,0 +1,24 @@
+﻿@model IEnumerable<PL.ASP.NET_MVC.Models.BankOperations>
+
+@{
+    ViewBag.Title = "Deposite";
+}
+
+<h2>@ViewBag.OperationName.ToString()</h2>
+
+@using (Html.BeginForm($"{ViewBag.OperationName}", "Account", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <table class="table">
+        @foreach (var mod in Model)
+        {
+            <tr>
+                <td>@mod.Id</td>
+                <td>@mod.Type</td>
+                <td>@mod.Sum</td>
+                <td>@Html.ActionLink($"{ViewBag.OperationName}", $"{ViewBag.OperationNameReference}", new {mod.Id})</td>
+            </tr>
+        }
+    </table>
+}

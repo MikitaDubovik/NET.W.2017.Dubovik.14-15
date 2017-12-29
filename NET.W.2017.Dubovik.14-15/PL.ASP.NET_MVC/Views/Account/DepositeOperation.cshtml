@@ -1,0 +1,32 @@
+﻿@model PL.ASP.NET_MVC.Models.CountMoney
+
+@{
+    ViewBag.Title = "DepositeOperation";
+}
+
+<h2>Deposite Operation</h2>
+
+@using (Ajax.BeginForm("DepositeOperation", "Account", new AjaxOptions { UpdateTargetId = "results" }))
+{
+    <div class="form-group">
+        @Html.LabelFor(model => model.Count, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Count, new { htmlAttributes = new { @class = "form-control", placeholder = "100" } })
+            @Html.ValidationMessageFor(model => model.Count, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div style="text-align: center">
+        <button type="submit" class="btn btn-primary btn-lg">Deposit money</button> <br />
+    </div>
+}
+
+<div id="results" style="margin-top: 10px">
+    @{
+        var isError = TempData["isError"] as bool?;
+        if (isError.HasValue && !isError.Value)
+        {
+            <h2 style="text-align: center">The operation was completed successfully</h2>
+        }
+     }
+</div>

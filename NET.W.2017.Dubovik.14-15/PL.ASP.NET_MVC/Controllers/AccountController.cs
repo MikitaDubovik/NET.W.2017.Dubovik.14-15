@@ -25,9 +25,7 @@ namespace PL.ASP.NET_MVC.Controllers
         {
             return this.View();
         }
-
-
-
+        
         public ActionResult OpenAccount() => this.View();
 
         [HttpPost]
@@ -63,23 +61,84 @@ namespace PL.ASP.NET_MVC.Controllers
             return this.View();
         }
 
+        public ActionResult Withdraw()
+        {
+            var accounts = this.accountService.GetAccounts().Select(a => new BankOperations()
+            {
+                Id = a.Id,
+                Sum = a.CurrentSum,
+                Type = GetTypeOfAccount(a.Id)
+            });
+            ViewBag.OperationName = "Withdraw";
+            ViewBag.OperationNameReference = "WithdrawOperation";
+            return this.View("MoneyOperations", accounts);
+        }
+
+        [HttpGet]
+        public ActionResult WithdrawOperation()
+        {
+            return View("DepositeOperation");
+        }
+
+        [HttpPost]
+        public ActionResult WithdrawOperation(CountMoney countMoney, string id = "")
+        {
+            if (!ModelState.IsValid)
+            {
+                TempData["isError"] = true;
+                return View("DepositeOperation");
+            }
+
+            accountService.WithdrawMoney(id, decimal.Parse(countMoney.Count));
+            return PartialView("_SuccessfulOperation");
+        }
+
         public ActionResult Deposite()
         {
             var accounts = this.accountService.GetAccounts().Select(a => new BankOperations()
             {
                 Id = a.Id,
-                Sum = a.CurrentSum
+                Sum = a.CurrentSum,
+                Type = GetTypeOfAccount(a.Id)
             });
-
-            //TO DO 
-            foreach (var account in accounts)
-            {
-                account.Type = this.accountService.GetTypeOfAccount(account.Id);
-            }
-            return this.View(accounts);
+            ViewBag.OperationName = "Deposite";
+            ViewBag.OperationNameReference = "DepositeOperation";
+            return this.View("MoneyOperations", accounts);
         }
 
-        public ActionResult Withdraw() => this.View();
+        [HttpGet]
+        public ActionResult DepositeOperation()
+        {
+            return View("DepositeOperation");
+        }
+
+        [HttpPost]
+        public ActionResult DepositeOperation(CountMoney countMoney, string id = "")
+        {
+            if (!ModelState.IsValid)
+            {
+                TempData["isError"] = true;
+                return View("DepositeOperation");
+            }
+            
+            accountService.DepositMoney(id, decimal.Parse(countMoney.Count));
+            return PartialView("_SuccessfulOperation");
+        }
+
+        private string GetTypeOfAccount(string id)
+        {
+            string temp = this.accountService.GetTypeOfAccount(id);
+            string[] tempArray = temp.Split('.');
+            switch (tempArray.Last())
+            {
+                case "GoldAccount":
+                    return "Gold Account";
+                case "PlatinumAccount":
+                    return "Platinum Account";
+                default:
+                    return "Base Account";
+            }
+        }
 
         public ActionResult Transfer() => this.View();
 

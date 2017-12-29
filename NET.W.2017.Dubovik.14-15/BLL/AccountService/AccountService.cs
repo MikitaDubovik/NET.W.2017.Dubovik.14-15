@@ -140,7 +140,12 @@ namespace NET.W._2017.Dubovik._14_15.AccountService
             var response = (from account in accounts
                 where account.Id == id
                 select account);
-            return response.GetType().ToString();
+            if (ReferenceEquals(response, null))
+            {
+                throw new ArgumentException($"Account with this ID - {id} don't exist");
+            }
+
+            return response.FirstOrDefault().GetType().ToString();
         }
 
         #endregion 

@@ -169,6 +169,7 @@
     </Compile>
     <Compile Include="Models\AccountWeb.cs" />
     <Compile Include="Models\BankOperations.cs" />
+    <Compile Include="Models\CountMoney.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -223,12 +224,13 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Account\Index.cshtml" />
-    <Content Include="Views\Account\Deposite.cshtml" />
-    <Content Include="Views\Account\Withdraw.cshtml" />
+    <Content Include="Views\Account\MoneyOperations.cshtml" />
     <Content Include="Views\Account\Transfer.cshtml" />
     <Content Include="Views\Account\Close.cshtml" />
     <Content Include="Views\Account\OpenAccount.cshtml" />
     <Content Include="Views\Account\AccountSuccessfullyOpened.cshtml" />
+    <Content Include="Views\Account\DepositeOperation.cshtml" />
+    <Content Include="Views\Shared\_SuccessfulOperation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
