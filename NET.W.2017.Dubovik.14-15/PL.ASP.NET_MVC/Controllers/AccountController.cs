@@ -13,19 +13,21 @@ namespace PL.ASP.NET_MVC.Controllers
 {
     public class AccountController : Controller
     {
+        private static string currentId;
+        private static string currentOperation;
         private readonly IAccountService accountService;
 
-       public AccountController(IAccountService accountService)
+        public AccountController(IAccountService accountService)
         {
             this.accountService = accountService;
         }
 
-    // GET: Account
+        // GET: Account
         public ActionResult Index()
         {
             return this.View();
         }
-        
+
         public ActionResult OpenAccount() => this.View();
 
         [HttpPost]
@@ -63,68 +65,66 @@ namespace PL.ASP.NET_MVC.Controllers
 
         public ActionResult Withdraw()
         {
-            var accounts = this.accountService.GetAccounts().Select(a => new BankOperations()
-            {
-                Id = a.Id,
-                Sum = a.CurrentSum,
-                Type = GetTypeOfAccount(a.Id)
-            });
-            ViewBag.OperationName = "Withdraw";
-            ViewBag.OperationNameReference = "WithdrawOperation";
-            return this.View("MoneyOperations", accounts);
-        }
-
-        [HttpGet]
-        public ActionResult WithdrawOperation()
-        {
-            return View("DepositeOperation");
-        }
-
-        [HttpPost]
-        public ActionResult WithdrawOperation(CountMoney countMoney, string id = "")
-        {
-            if (!ModelState.IsValid)
-            {
-                TempData["isError"] = true;
-                return View("DepositeOperation");
-            }
-
-            accountService.WithdrawMoney(id, decimal.Parse(countMoney.Count));
-            return PartialView("_SuccessfulOperation");
+            currentOperation = "Withdraw";
+            return ActiveOperation();
         }
 
         public ActionResult Deposite()
         {
+            currentOperation = "Deposite";
+            return ActiveOperation();
+        }
+
+        private ActionResult ActiveOperation()
+        {
             var accounts = this.accountService.GetAccounts().Select(a => new BankOperations()
             {
                 Id = a.Id,
                 Sum = a.CurrentSum,
                 Type = GetTypeOfAccount(a.Id)
             });
-            ViewBag.OperationName = "Deposite";
-            ViewBag.OperationNameReference = "DepositeOperation";
-            return this.View("MoneyOperations", accounts);
+
+            ViewBag.OperationName = currentOperation;
+            return this.View("ViewTable", accounts);
         }
 
         [HttpGet]
-        public ActionResult DepositeOperation()
+        public ActionResult StartOperation(string id = "")
         {
-            return View("DepositeOperation");
+            currentId = id;
+            ViewBag.OperationName = currentOperation;
+            return View("MoneyOperation");
         }
 
         [HttpPost]
-        public ActionResult DepositeOperation(CountMoney countMoney, string id = "")
+        public ActionResult EndOperation(CountMoney countMoney)
         {
             if (!ModelState.IsValid)
             {
                 TempData["isError"] = true;
-                return View("DepositeOperation");
+                return PartialView("_NotValidData");
             }
-            
-            accountService.DepositMoney(id, decimal.Parse(countMoney.Count));
-            return PartialView("_SuccessfulOperation");
-        }
 
+            switch (currentOperation)
+            {
+                case "Withdraw":
+                    accountService.WithdrawMoney(currentId, decimal.Parse(countMoney.Count));;
+                    break;
+                case "Deposite":
+                    accountService.DepositMoney(currentId, decimal.Parse(countMoney.Count));
+                    break;
+                    default:
+                        break;
+            }
+
+            if (Request.IsAjaxRequest())
+            {
+                return PartialView("_OperationSuccessfullyComplete");
+            }
+
+            return View("OperationSuccessfullyComplete");
+        }
+        
         private string GetTypeOfAccount(string id)
         {
             string temp = this.accountService.GetTypeOfAccount(id);

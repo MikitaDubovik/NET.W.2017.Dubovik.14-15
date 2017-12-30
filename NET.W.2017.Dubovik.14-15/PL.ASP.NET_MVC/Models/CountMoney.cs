@@ -9,7 +9,8 @@ namespace PL.ASP.NET_MVC.Models
     public class CountMoney
     {
         [Display(Name = "Amount of money")]
-        [Range(typeof(decimal), "1", "20000", ErrorMessage = "The sum must be at least 1 and not more than 20.000")]
+        [StringLength(5, MinimumLength = 2)]
+        [Range(typeof(decimal), "10", "20000", ErrorMessage = "The sum must be at least 1 and not more than 20.000")]
         public string Count { get; set; }
     }
 }

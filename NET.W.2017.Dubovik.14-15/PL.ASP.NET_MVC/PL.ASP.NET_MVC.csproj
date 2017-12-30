@@ -224,13 +224,15 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Account\Index.cshtml" />
-    <Content Include="Views\Account\MoneyOperations.cshtml" />
+    <Content Include="Views\Account\ViewTable.cshtml" />
     <Content Include="Views\Account\Transfer.cshtml" />
     <Content Include="Views\Account\Close.cshtml" />
     <Content Include="Views\Account\OpenAccount.cshtml" />
     <Content Include="Views\Account\AccountSuccessfullyOpened.cshtml" />
-    <Content Include="Views\Account\DepositeOperation.cshtml" />
-    <Content Include="Views\Shared\_SuccessfulOperation.cshtml" />
+    <Content Include="Views\Account\MoneyOperation.cshtml" />
+    <Content Include="Views\Shared\_OperationSuccessfullyComplete.cshtml" />
+    <Content Include="Views\Shared\_NotValidData.cshtml" />
+    <Content Include="Views\Account\OperationSuccessfullyComplete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
