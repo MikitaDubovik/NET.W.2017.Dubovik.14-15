@@ -1,0 +1,30 @@
+﻿@model PL.ASP.NET_MVC.Models.CloseOperation
+
+@{
+    ViewBag.Title = "DepositeOperation";
+}
+
+<h2>@ViewBag.OperationName Operation</h2>
+<hr />
+<br />
+@using (Ajax.BeginForm("EndCloseOperation", "Account", new AjaxOptions { UpdateTargetId = "results" }))
+{
+    <div class="form-group">
+        <p>@Html.LabelFor(model => model.Id, htmlAttributes: new { @class = "control-label col-md-2" }) @ViewBag.Id</p>
+    </div>
+
+    <div style="text-align: center">
+        <button type="submit" class="btn btn-primary btn-lg">@ViewBag.OperationName</button> <br />
+    </div>
+}
+
+<div id="results" style="margin-top: 10px">
+    @{
+        var isError = TempData["isError"] as bool?;
+        if (isError.HasValue && !isError.Value)
+        {
+            <h2 style="text-align: center">The operation was completed successfully</h2>
+        }
+    }
+</div>
+

@@ -48,7 +48,13 @@ namespace ORM
 
             using (var db = new BankAccountContext())
             {
-                db.BankAccounts.Remove(account);
+                var tempAccount = db.Set<BankAccount>().FirstOrDefault(acc => acc.AccountId == account.AccountId);
+                if (ReferenceEquals(tempAccount, null))
+                {
+                    throw new InvalidOperationException($"Account - {nameof(account)} doesn't exist");
+                }
+
+                db.Set<BankAccount>().Remove(tempAccount);
                 db.SaveChanges();
             }
         }

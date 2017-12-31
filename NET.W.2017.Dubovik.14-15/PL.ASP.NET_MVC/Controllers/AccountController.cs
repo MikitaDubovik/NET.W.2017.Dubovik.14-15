@@ -44,7 +44,7 @@ namespace PL.ASP.NET_MVC.Controllers
                 account.Type,
                 account.OwnerFirstName,
                 account.OwnerSecondName,
-                account.Sum));
+                decimal.Parse(account.Sum)));
 
             this.TempData["isAccountOpened"] = true;
             return this.RedirectToAction(nameof(this.AccountSuccessfullyOpened));
@@ -75,12 +75,18 @@ namespace PL.ASP.NET_MVC.Controllers
             return ActiveOperation();
         }
 
+        public ActionResult Close()
+        {
+            currentOperation = "Close";
+            return ActiveOperation();
+        }
+
         private ActionResult ActiveOperation()
         {
-            var accounts = this.accountService.GetAccounts().Select(a => new BankOperations()
+            var accounts = this.accountService.GetAccounts().Select(a => new MoneyOperations()
             {
                 Id = a.Id,
-                Sum = a.CurrentSum,
+                Sum = a.CurrentSum.ToString(),
                 Type = GetTypeOfAccount(a.Id)
             });
 
@@ -93,25 +99,53 @@ namespace PL.ASP.NET_MVC.Controllers
         {
             currentId = id;
             ViewBag.OperationName = currentOperation;
+            ViewBag.Id = id;
+            if (currentOperation.Equals("Close"))
+            {
+                return View("CloseOperation");
+            }
+
             return View("MoneyOperation");
         }
 
         [HttpPost]
-        public ActionResult EndOperation(CountMoney countMoney)
+        public ActionResult EndMoneyOperation(MoneyOperations bank)
+        {
+            return End(bank);
+        }
+
+        [HttpPost]
+        public ActionResult EndCloseOperation(CloseOperation bank)
+        {
+            return End(bank);
+        }
+
+        [HttpPost]
+        public ActionResult End(IOperationModel bank)
         {
             if (!ModelState.IsValid)
             {
                 TempData["isError"] = true;
-                return PartialView("_NotValidData");
+                if (Request.IsAjaxRequest())
+                {
+                    return PartialView("_NotValidData");
+                }
+                else
+                {
+                    return View("NotValidData");
+                }
             }
 
             switch (currentOperation)
             {
                 case "Withdraw":
-                    accountService.WithdrawMoney(currentId, decimal.Parse(countMoney.Count));;
+                    accountService.WithdrawMoney(currentId, Convert.ToDecimal(bank.Sum));;
                     break;
                 case "Deposite":
-                    accountService.DepositMoney(currentId, decimal.Parse(countMoney.Count));
+                    accountService.DepositMoney(currentId, Convert.ToDecimal(bank.Sum));
+                    break;
+                case "Close":
+                    accountService.CloseAccount(currentId);
                     break;
                     default:
                         break;
@@ -141,7 +175,5 @@ namespace PL.ASP.NET_MVC.Controllers
         }
 
         public ActionResult Transfer() => this.View();
-
-        public ActionResult Close() => this.View();
     }
 }

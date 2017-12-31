@@ -1,18 +1,23 @@
-﻿@model PL.ASP.NET_MVC.Models.CountMoney
+﻿@model PL.ASP.NET_MVC.Models.MoneyOperations
+
 
 @{
     ViewBag.Title = "DepositeOperation";
 }
 
 <h2>@ViewBag.OperationName Operation</h2>
+<hr />
 
-@using (Ajax.BeginForm("EndOperation", "Account", new AjaxOptions { UpdateTargetId = "results" }))
+@using (Ajax.BeginForm("EndMoneyOperation", "Account", new AjaxOptions { UpdateTargetId = "results" }))
 {
     <div class="form-group">
-        @Html.LabelFor(model => model.Count, htmlAttributes: new { @class = "control-label col-md-2" })
+        <p>@Html.LabelFor(model => model.Id, htmlAttributes: new { @class = "control-label col-md-2" }) @ViewBag.Id</p>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Sum, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.Count, new { htmlAttributes = new { @class = "form-control", placeholder = "100" } })
-            @Html.ValidationMessageFor(model => model.Count, "", new { @class = "text-danger" })
+            @Html.EditorFor(model => model.Sum, new { htmlAttributes = new { @class = "form-control", placeholder = "100" } })
+            @Html.ValidationMessageFor(model => model.Sum, "", new { @class = "text-danger" })
         </div>
     </div>
 

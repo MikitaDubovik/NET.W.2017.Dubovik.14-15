@@ -1,10 +1,11 @@
-﻿@model IEnumerable<PL.ASP.NET_MVC.Models.BankOperations>
+﻿@model IEnumerable<PL.ASP.NET_MVC.Models.MoneyOperations>
 
 @{
     ViewBag.Title = "Operations";
 }
 
 <h2>@ViewBag.OperationName.ToString()</h2>
+<hr/>
 
 @using (Html.BeginForm($"{ViewBag.OperationName}", "Account", FormMethod.Post))
 {

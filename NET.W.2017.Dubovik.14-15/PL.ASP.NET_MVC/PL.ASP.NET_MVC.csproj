@@ -168,8 +168,9 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountWeb.cs" />
-    <Compile Include="Models\BankOperations.cs" />
-    <Compile Include="Models\CountMoney.cs" />
+    <Compile Include="Models\CloseOperation.cs" />
+    <Compile Include="Models\MoneyOperations.cs" />
+    <Compile Include="Models\IOperationModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -233,6 +234,8 @@
     <Content Include="Views\Shared\_OperationSuccessfullyComplete.cshtml" />
     <Content Include="Views\Shared\_NotValidData.cshtml" />
     <Content Include="Views\Account\OperationSuccessfullyComplete.cshtml" />
+    <Content Include="Views\Account\NotValidData.cshtml" />
+    <Content Include="Views\Account\CloseOperation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

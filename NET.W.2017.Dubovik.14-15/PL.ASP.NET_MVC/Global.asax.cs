@@ -25,5 +25,10 @@ namespace PL.ASP.NET_MVC
             kernel.Unbind<ModelValidatorProvider>();
             System.Web.Mvc.DependencyResolver.SetResolver(new NinjectDependencyResolver(kernel));
         }
+
+        protected void Application_EndRequest()
+        {   //here breakpoint
+            // under debug mode you can find the exceptions at code: this.Context.AllErrors
+        }
     }
 }

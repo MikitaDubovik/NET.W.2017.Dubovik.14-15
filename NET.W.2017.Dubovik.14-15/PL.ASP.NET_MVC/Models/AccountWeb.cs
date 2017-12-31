@@ -23,8 +23,7 @@ namespace PL.ASP.NET_MVC.Models
 
         [Display(Name = "Initial sum")]
         [Required(ErrorMessage = "Field must not be empty", AllowEmptyStrings = false)]
-        [StringLength(5, MinimumLength = 2)]
         [Range(typeof(decimal), "100", "50000", ErrorMessage = "The initial sum must be at least 100 and not more than 50,000")]
-        public decimal Sum { get; set; }
+        public string Sum { get; set; }
     }
 }
