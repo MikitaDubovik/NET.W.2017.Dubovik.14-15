@@ -27,8 +27,7 @@ namespace PL.ASP.NET_MVC
         }
 
         protected void Application_EndRequest()
-        {   //here breakpoint
-            // under debug mode you can find the exceptions at code: this.Context.AllErrors
+        {
         }
     }
 }

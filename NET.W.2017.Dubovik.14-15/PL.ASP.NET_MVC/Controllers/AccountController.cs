@@ -1,16 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
-using DependencyResolver;
 using NET.W._2017.Dubovik._14_15.AccountService;
-using Ninject;
 using PL.ASP.NET_MVC.Models;
 
 namespace PL.ASP.NET_MVC.Controllers
 {
+    [Authorize]
     public class AccountController : Controller
     {
         private static string currentId;
@@ -120,8 +117,10 @@ namespace PL.ASP.NET_MVC.Controllers
             return End(bank);
         }
 
+        public ActionResult Transfer() => this.View();
+
         [HttpPost]
-        public ActionResult End(IOperationModel bank)
+        private ActionResult End(IOperationModel bank)
         {
             if (!ModelState.IsValid)
             {
@@ -173,7 +172,5 @@ namespace PL.ASP.NET_MVC.Controllers
                     return "Base Account";
             }
         }
-
-        public ActionResult Transfer() => this.View();
     }
 }

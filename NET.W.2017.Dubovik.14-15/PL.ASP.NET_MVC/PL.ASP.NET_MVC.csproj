@@ -163,15 +163,20 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="DependencyResolver\NinjectRegistrations.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\AccountWeb.cs" />
-    <Compile Include="Models\CloseOperation.cs" />
-    <Compile Include="Models\MoneyOperations.cs" />
-    <Compile Include="Models\IOperationModel.cs" />
+    <Compile Include="Infrastructure\CapthaImage.cs" />
+    <Compile Include="Providers\CustomMemberShipProvider.cs" />
+    <Compile Include="ViewModels\Account\AccountWeb.cs" />
+    <Compile Include="ViewModels\AccountOperations\CloseOperation.cs" />
+    <Compile Include="ViewModels\Authentication\LogOnViewModel.cs" />
+    <Compile Include="ViewModels\AccountOperations\MoneyOperations.cs" />
+    <Compile Include="ViewModels\AccountOperations\IOperationModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\Authentication\RegisterViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -236,6 +241,9 @@
     <Content Include="Views\Account\OperationSuccessfullyComplete.cshtml" />
     <Content Include="Views\Account\NotValidData.cshtml" />
     <Content Include="Views\Account\CloseOperation.cshtml" />
+    <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Auth\Login.cshtml" />
+    <Content Include="Views\Auth\Register.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
