@@ -8,6 +8,7 @@ namespace PL.ASP.NET_MVC.Models
     public interface IOperationModel
     {
         string Id { get; set; }
+
         string Sum { get; set; }
     }
 }

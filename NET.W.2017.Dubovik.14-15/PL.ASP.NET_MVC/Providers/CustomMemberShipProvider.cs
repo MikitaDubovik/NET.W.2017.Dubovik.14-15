@@ -4,74 +4,117 @@ using System.Linq;
 using System.Web;
 using System.Web.Helpers;
 using System.Web.Security;
+using BLL.Interface;
 
 namespace PL.ASP.NET_MVC.Providers
 {
     public class CustomMembershipProvider : MembershipProvider
     {
+        #region Stabs
+
+        public override bool EnablePasswordRetrieval
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public override bool EnablePasswordReset
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public override bool RequiresQuestionAndAnswer
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public override string ApplicationName { get; set; }
+
+        public override int MaxInvalidPasswordAttempts
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public override int PasswordAttemptWindow
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public override bool RequiresUniqueEmail
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public override MembershipPasswordFormat PasswordFormat
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public override int MinRequiredPasswordLength
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public override int MinRequiredNonAlphanumericCharacters
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public override string PasswordStrengthRegularExpression
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        #endregion
+
+        private readonly IOwnerService ownerService;
+
+        public CustomMembershipProvider(IOwnerService ownerService)
+        {
+            this.ownerService = ownerService;
+        }
+
         public MembershipUser CreateUser(string email, string password)
         {
-            MembershipUser membershipUser = GetUser(email, false);
+            MembershipUser membershipUser = this.GetUser(email, false);
 
             if (membershipUser != null)
             {
                 return null;
             }
-            ////Creates user here and writes they into db
-            //var user = new User
-            //{
-            //    Email = email,
-            //    Password = Crypto.HashPassword(password),
-            //    //http://msdn.microsoft.com/ru-ru/library/system.web.helpers.crypto(v=vs.111).aspx
-            //    CreationDate = DateTime.Now
-            //};
 
-            //UserRepository.CreateUser(user);
-            membershipUser = GetUser(email, false);
+            ownerService.RegisterOwner(email, Crypto.HashPassword(password));
+            membershipUser = this.GetUser(email, false);
             return membershipUser;
         }
 
         public override bool ValidateUser(string email, string password)
         {
-            //var user = UserRepository.GetUserByEmail(email);
+            var owner = ownerService.GetOwner(email);
 
-            //if (user != null && Crypto.VerifyHashedPassword(user.Password, password))
-            //{
-            //    return true;
-            //}
+            if (owner != null && Crypto.VerifyHashedPassword(owner.Password, password))
+            {
+                return true;
+            }
+
             return false;
         }
 
         public override MembershipUser GetUser(string email, bool userIsOnline)
         {
-            throw new NotImplementedException();
-            //var user = UserRepository.GetUserByEmail(email);
+            var owner = ownerService.GetOwner(email);
 
-            //if (user == null) return null;
+            if (owner == null) return null;
 
-            //var memberUser = new MembershipUser("CustomMembershipProvider", user.Email,
-            //    null, null, null, null,
-            //    false, false, user.CreationDate,
-            //    DateTime.MinValue, DateTime.MinValue,
-            //    DateTime.MinValue, DateTime.MinValue);
+            var memberUser = new MembershipUser("CustomMembershipProvider", owner.Email,
+                null, null, null, null,
+                false, false, DateTime.Now, 
+                DateTime.MinValue, DateTime.MinValue,
+                DateTime.MinValue, DateTime.MinValue);
 
-            //return memberUser;
+            return memberUser;
         }
 
         #region Stabs
-        public override MembershipUser CreateUser(string username, string password, string email,
-            string passwordQuestion,
-            string passwordAnswer, bool isApproved, object providerUserKey, out MembershipCreateStatus status)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override bool ChangePasswordQuestionAndAnswer(string username, string password, string newPasswordQuestion,
-            string newPasswordAnswer)
-        {
-            throw new NotImplementedException();
-        }
-
         public override string GetPassword(string username, string answer)
         {
             throw new NotImplementedException();
@@ -132,57 +175,28 @@ namespace PL.ASP.NET_MVC.Providers
             throw new NotImplementedException();
         }
 
-        public override bool EnablePasswordRetrieval
+        public override MembershipUser CreateUser(
+            string username,
+            string password,
+            string email,
+            string passwordQuestion,
+            string passwordAnswer,
+            bool isApproved,
+            object providerUserKey,
+            out MembershipCreateStatus status)
         {
-            get { throw new NotImplementedException(); }
+            throw new NotImplementedException();
         }
 
-        public override bool EnablePasswordReset
+        public override bool ChangePasswordQuestionAndAnswer(
+            string username,
+            string password,
+            string newPasswordQuestion,
+            string newPasswordAnswer)
         {
-            get { throw new NotImplementedException(); }
+            throw new NotImplementedException();
         }
 
-        public override bool RequiresQuestionAndAnswer
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public override string ApplicationName { get; set; }
-
-        public override int MaxInvalidPasswordAttempts
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public override int PasswordAttemptWindow
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public override bool RequiresUniqueEmail
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public override MembershipPasswordFormat PasswordFormat
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public override int MinRequiredPasswordLength
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public override int MinRequiredNonAlphanumericCharacters
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public override string PasswordStrengthRegularExpression
-        {
-            get { throw new NotImplementedException(); }
-        }
         #endregion     
     }
 }

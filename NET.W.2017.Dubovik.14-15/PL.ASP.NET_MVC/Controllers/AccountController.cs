@@ -7,7 +7,7 @@ using PL.ASP.NET_MVC.Models;
 
 namespace PL.ASP.NET_MVC.Controllers
 {
-    [Authorize]
+    ////[Authorize]
     public class AccountController : Controller
     {
         private static string currentId;
@@ -63,32 +63,19 @@ namespace PL.ASP.NET_MVC.Controllers
         public ActionResult Withdraw()
         {
             currentOperation = "Withdraw";
-            return ActiveOperation();
+            return this.ActiveOperation();
         }
 
         public ActionResult Deposite()
         {
             currentOperation = "Deposite";
-            return ActiveOperation();
+            return this.ActiveOperation();
         }
 
         public ActionResult Close()
         {
             currentOperation = "Close";
-            return ActiveOperation();
-        }
-
-        private ActionResult ActiveOperation()
-        {
-            var accounts = this.accountService.GetAccounts().Select(a => new MoneyOperations()
-            {
-                Id = a.Id,
-                Sum = a.CurrentSum.ToString(),
-                Type = GetTypeOfAccount(a.Id)
-            });
-
-            ViewBag.OperationName = currentOperation;
-            return this.View("ViewTable", accounts);
+            return this.ActiveOperation();
         }
 
         [HttpGet]
@@ -99,22 +86,22 @@ namespace PL.ASP.NET_MVC.Controllers
             ViewBag.Id = id;
             if (currentOperation.Equals("Close"))
             {
-                return View("CloseOperation");
+                return this.View("CloseOperation");
             }
 
-            return View("MoneyOperation");
+            return this.View("MoneyOperation");
         }
 
         [HttpPost]
         public ActionResult EndMoneyOperation(MoneyOperations bank)
         {
-            return End(bank);
+            return this.End(bank);
         }
 
         [HttpPost]
         public ActionResult EndCloseOperation(CloseOperation bank)
         {
-            return End(bank);
+            return this.End(bank);
         }
 
         public ActionResult Transfer() => this.View();
@@ -124,27 +111,27 @@ namespace PL.ASP.NET_MVC.Controllers
         {
             if (!ModelState.IsValid)
             {
-                TempData["isError"] = true;
+                this.TempData["isError"] = true;
                 if (Request.IsAjaxRequest())
                 {
-                    return PartialView("_NotValidData");
+                    return this.PartialView("_NotValidData");
                 }
                 else
                 {
-                    return View("NotValidData");
+                    return this.View("NotValidData");
                 }
             }
 
             switch (currentOperation)
             {
                 case "Withdraw":
-                    accountService.WithdrawMoney(currentId, Convert.ToDecimal(bank.Sum));;
+                    this.accountService.WithdrawMoney(currentId, Convert.ToDecimal(bank.Sum));
                     break;
                 case "Deposite":
-                    accountService.DepositMoney(currentId, Convert.ToDecimal(bank.Sum));
+                    this.accountService.DepositMoney(currentId, Convert.ToDecimal(bank.Sum));
                     break;
                 case "Close":
-                    accountService.CloseAccount(currentId);
+                    this.accountService.CloseAccount(currentId);
                     break;
                     default:
                         break;
@@ -152,12 +139,25 @@ namespace PL.ASP.NET_MVC.Controllers
 
             if (Request.IsAjaxRequest())
             {
-                return PartialView("_OperationSuccessfullyComplete");
+                return this.PartialView("_OperationSuccessfullyComplete");
             }
 
-            return View("OperationSuccessfullyComplete");
+            return this.View("OperationSuccessfullyComplete");
         }
-        
+
+        private ActionResult ActiveOperation()
+        {
+            var accounts = this.accountService.GetAccounts().Select(a => new MoneyOperations()
+            {
+                Id = a.Id,
+                Sum = a.CurrentSum.ToString(),
+                Type = this.GetTypeOfAccount(a.Id)
+            });
+
+            ViewBag.OperationName = currentOperation;
+            return this.View("ViewTable", accounts);
+        }
+
         private string GetTypeOfAccount(string id)
         {
             string temp = this.accountService.GetTypeOfAccount(id);

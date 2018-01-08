@@ -48,10 +48,6 @@ namespace NET.W._2017.Dubovik._14_15.AccountService
             try
             {
                 var dalAccounts = accountRepository.GetAccounts();
-                //foreach (var dalAccount in dalAccounts)
-                //{
-                //    accounts.Add(dalAccount.ToBllAccount());
-                //}
                 accounts.AddRange(dalAccounts.Select(account => account.ToBllAccount()));
             }
             catch (Exception)
@@ -137,9 +133,9 @@ namespace NET.W._2017.Dubovik._14_15.AccountService
         /// <inheritdoc />
         public string GetTypeOfAccount(string id)
         {
-            var response = (from account in accounts
+            var response = from account in accounts
                 where account.Id == id
-                select account);
+                select account;
             if (ReferenceEquals(response, null))
             {
                 throw new ArgumentException($"Account with this ID - {id} don't exist");

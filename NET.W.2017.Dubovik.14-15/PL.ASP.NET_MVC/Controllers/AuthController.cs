@@ -1,28 +1,31 @@
 ﻿using System;
 using System.Drawing.Imaging;
 using System.Globalization;
+using System.Linq;
 using System.Web.Mvc;
 using System.Web.Security;
+using BLL.Interface;
 using PL.ASP.NET_MVC.Infrastructure;
 using PL.ASP.NET_MVC.Providers;
 using PL.ASP.NET_MVC.ViewModels;
-
 
 namespace PL.ASP.NET_MVC.Controllers
 {
     [Authorize]
     public class AuthController : Controller
     {
-        public AuthController(/*IUserRepository repository*/)
+        private readonly IOwnerService ownerService;
+
+        public AuthController(IOwnerService ownerService)
         {
-           // this.repository = repository;
+            this.ownerService = ownerService;
         }
 
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
-            return View();
+            return this.View();
         }
 
         //// TO DO async
@@ -38,34 +41,34 @@ namespace PL.ASP.NET_MVC.Controllers
                     FormsAuthentication.SetAuthCookie(viewModel.Email, viewModel.RememberMe);
                     if (Url.IsLocalUrl(returnUrl))
                     {
-                        return Redirect(returnUrl);
+                        return this.Redirect(returnUrl);
                     }
                     else
                     {
-                        return RedirectToAction("Index", "Account");
+                        return this.RedirectToAction("Index", "Account");
                     }
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Incorrect login or password.");
+                    ModelState.AddModelError(string.Empty, "Incorrect login or password.");
                 }
             }
 
-            return View(viewModel);
+            return this.View(viewModel);
         }
 
         public ActionResult LogOff()
         {
             FormsAuthentication.SignOut();
 
-            return RedirectToAction("Login", "Auth");
+            return this.RedirectToAction("Login", "Auth");
         }
 
         [HttpGet]
         [AllowAnonymous]
         public ActionResult Register()
         {
-            return View();
+            return this.View();
         }
 
         //// TO DO async
@@ -74,43 +77,43 @@ namespace PL.ASP.NET_MVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Register(RegisterViewModel viewModel)
         {
-            if (viewModel.Captcha != (string) Session[CaptchaImage.CaptchaValueKey])
+            if (viewModel.Captcha != (string)Session[CaptchaImage.CaptchaValueKey])
             {
                 ModelState.AddModelError("Captcha", "Incorrect input.");
-                return View(viewModel);
+                return this.View(viewModel);
             }
 
-            var anyUser = true;//repository.GetAllUsers().Any(u => u.Email.Contains(viewModel.Email));
+            var anyUser = ownerService.GetOwners().Any(u => u.Email.Contains(viewModel.Email));
 
             if (anyUser)
             {
-                ModelState.AddModelError("", "User with this address already registered.");
-                return View(viewModel);
+                ModelState.AddModelError(string.Empty, "User with this address already registered.");
+                return this.View(viewModel);
             }
 
             if (ModelState.IsValid)
             {
-                var membershipUser = ((CustomMembershipProvider) Membership.Provider)
+                var membershipUser = ((CustomMembershipProvider)Membership.Provider)
                     .CreateUser(viewModel.Email, viewModel.Password);
 
                 if (membershipUser != null)
                 {
                     FormsAuthentication.SetAuthCookie(viewModel.Email, false);
-                    return RedirectToAction("Index", "Account");
+                    return this.RedirectToAction("Index", "Account");
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Error registration.");
+                    ModelState.AddModelError(string.Empty, "Error registration.");
                 }
             }
 
-            return View(viewModel);
+            return this.View(viewModel);
         }
 
         [AllowAnonymous]
         public ActionResult Captcha()
         {
-            Session[CaptchaImage.CaptchaValueKey] =
+            this.Session[CaptchaImage.CaptchaValueKey] =
                 new Random(DateTime.Now.Millisecond).Next(1111, 9999).ToString(CultureInfo.InvariantCulture);
             var ci = new CaptchaImage(Session[CaptchaImage.CaptchaValueKey].ToString(), 211, 50, "Helvetica");
 
@@ -129,7 +132,7 @@ namespace PL.ASP.NET_MVC.Controllers
         [ChildActionOnly]
         public ActionResult LoginPartial()
         {
-            return PartialView("_LoginPartial");
+            return this.PartialView("_LoginPartial");
         }
     }
 }

@@ -19,7 +19,7 @@ namespace NET.W._2017.Dubovik._14_15.Mappers
             };
 
         internal static Account ToBllAccount(this BankAccount dalAccount)
-            => (Account) Activator.CreateInstance(
+            => (Account)Activator.CreateInstance(
                 GetAccountType(dalAccount.AccountType),
                 dalAccount.AccountId,
                 dalAccount.OwnerFirstName,

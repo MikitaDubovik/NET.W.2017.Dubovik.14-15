@@ -32,7 +32,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Accounts\Account.cs" />
@@ -43,6 +42,7 @@
     <Compile Include="IAccountService.cs" />
     <Compile Include="IDGenerator\IDGenerator.cs" />
     <Compile Include="IDGenerator\IIDGenerator.cs" />
+    <Compile Include="IOwnerService.cs" />
     <Compile Include="Owners\Owner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

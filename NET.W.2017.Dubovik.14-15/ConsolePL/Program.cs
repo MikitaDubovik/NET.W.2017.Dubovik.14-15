@@ -55,6 +55,7 @@ namespace ConsolePL
             {
                 Console.WriteLine(account.OwnerFirstName);
             }
+
             var idFirst = otherIdFirst;
             var idSecond = otherIdSecond;
             Console.WriteLine("After searching");
