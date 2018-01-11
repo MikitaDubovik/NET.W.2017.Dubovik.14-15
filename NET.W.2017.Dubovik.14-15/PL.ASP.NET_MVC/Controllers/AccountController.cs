@@ -3,7 +3,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using NET.W._2017.Dubovik._14_15.AccountService;
-using PL.ASP.NET_MVC.Models;
+using PL.ASP.NET_MVC.ViewModels.Account;
+using PL.ASP.NET_MVC.ViewModels.AccountOperations;
 
 namespace PL.ASP.NET_MVC.Controllers
 {

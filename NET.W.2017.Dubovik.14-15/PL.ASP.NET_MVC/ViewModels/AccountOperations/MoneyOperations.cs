@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
-using BLL.Interface.Accounts;
 
-namespace PL.ASP.NET_MVC.Models
+namespace PL.ASP.NET_MVC.ViewModels.AccountOperations
 {
     public class MoneyOperations : IOperationModel
     {

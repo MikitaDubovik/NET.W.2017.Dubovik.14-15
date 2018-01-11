@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Mvc;
 using System.Web.Helpers;
 using System.Web.Security;
 using BLL.Interface;
@@ -66,7 +63,7 @@ namespace PL.ASP.NET_MVC.Providers
 
         #endregion
 
-        private  IOwnerService ownerService => (IOwnerService)DependencyResolver.Current.GetService(typeof(IOwnerService));
+        private  IOwnerService ownerService => (IOwnerService)System.Web.Mvc.DependencyResolver.Current.GetService(typeof(IOwnerService));
 
         public MembershipUser CreateUser(string email, string password)
         {

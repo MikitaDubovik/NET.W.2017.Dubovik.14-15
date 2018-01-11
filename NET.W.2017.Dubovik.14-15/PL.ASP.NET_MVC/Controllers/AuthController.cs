@@ -8,6 +8,7 @@ using BLL.Interface;
 using PL.ASP.NET_MVC.Infrastructure;
 using PL.ASP.NET_MVC.Providers;
 using PL.ASP.NET_MVC.ViewModels;
+using PL.ASP.NET_MVC.ViewModels.Authentication;
 
 namespace PL.ASP.NET_MVC.Controllers
 {

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace PL.ASP.NET_MVC.ViewModels
+namespace PL.ASP.NET_MVC.ViewModels.Authentication
 {
     public class LogOnViewModel
     {

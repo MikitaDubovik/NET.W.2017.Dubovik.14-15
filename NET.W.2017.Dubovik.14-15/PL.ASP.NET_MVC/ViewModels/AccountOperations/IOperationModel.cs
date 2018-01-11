@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace PL.ASP.NET_MVC.Models
+﻿namespace PL.ASP.NET_MVC.ViewModels.AccountOperations
 {
     public interface IOperationModel
     {

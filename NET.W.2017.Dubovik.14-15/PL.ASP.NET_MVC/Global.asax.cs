@@ -7,7 +7,6 @@ using System.Web.Optimization;
 using System.Web.Routing;
 using Ninject;
 using Ninject.Web.Mvc;
-using PL.ASP.NET_MVC.DependencyResolver;
 
 namespace PL.ASP.NET_MVC
 {
@@ -24,7 +23,7 @@ namespace PL.ASP.NET_MVC
             //var kernel = new StandardKernel(registrations);
             //kernel.Unbind<ModelValidatorProvider>();
             //System.Web.Mvc.DependencyResolver.SetResolver(new NinjectDependencyResolver(kernel));
-            DependencyResolver.SetResolver(new NinjectDependencyResolver());
+            System.Web.Mvc.DependencyResolver.SetResolver(new Infrastructure.NinjectDependencyResolver());
         }
 
         protected void Application_EndRequest()
