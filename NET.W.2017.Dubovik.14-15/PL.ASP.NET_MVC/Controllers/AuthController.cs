@@ -84,7 +84,7 @@ namespace PL.ASP.NET_MVC.Controllers
                 return this.View(viewModel);
             }
 
-            var anyUser = ownerService.GetOwners().Any(u => u.Email.Contains(viewModel.Email));
+            var anyUser = this.ownerService.GetOwners().Any(u => u.Email.Contains(viewModel.Email));
 
             if (anyUser)
             {

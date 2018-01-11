@@ -63,7 +63,7 @@ namespace PL.ASP.NET_MVC.Providers
 
         #endregion
 
-        private  IOwnerService ownerService => (IOwnerService)System.Web.Mvc.DependencyResolver.Current.GetService(typeof(IOwnerService));
+        private IOwnerService OwnerService => (IOwnerService)System.Web.Mvc.DependencyResolver.Current.GetService(typeof(IOwnerService));
 
         public MembershipUser CreateUser(string email, string password)
         {
@@ -74,14 +74,14 @@ namespace PL.ASP.NET_MVC.Providers
                 return null;
             }
 
-            ownerService.RegisterOwner(email, Crypto.HashPassword(password));
+            this.OwnerService.RegisterOwner(email, Crypto.HashPassword(password));
             membershipUser = this.GetUser(email, false);
             return membershipUser;
         }
 
         public override bool ValidateUser(string email, string password)
         {
-            var owner = ownerService.GetOwner(email);
+            var owner = this.OwnerService.GetOwner(email);
 
             if (owner != null && Crypto.VerifyHashedPassword(owner.Password, password))
             {
@@ -93,15 +93,27 @@ namespace PL.ASP.NET_MVC.Providers
 
         public override MembershipUser GetUser(string email, bool userIsOnline)
         {
-            var owner = ownerService.GetOwner(email);
+            var owner = this.OwnerService.GetOwner(email);
 
-            if (owner == null) return null;
+            if (owner == null)
+            {
+                return null;
+            }
 
-            var memberUser = new MembershipUser("CustomMembershipProvider", owner.Email,
-                null, null, null, null,
-                false, false, DateTime.Now, 
-                DateTime.MinValue, DateTime.MinValue,
-                DateTime.MinValue, DateTime.MinValue);
+            var memberUser = new MembershipUser(
+                "CustomMembershipProvider",
+                owner.Email,
+                null, 
+                null, 
+                null, 
+                null,
+                false,
+                false, 
+                DateTime.Now, 
+                DateTime.MinValue,
+                DateTime.MinValue,
+                DateTime.MinValue,
+                DateTime.MinValue);
 
             return memberUser;
         }

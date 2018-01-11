@@ -54,11 +54,6 @@ namespace NET.W._2017.Dubovik._14_15.OwnerService
                 throw;
             }
         }
-
-        private static Owner CreateOwner(Type owner, string email, string password)
-        {
-            return (Owner)Activator.CreateInstance(owner, email, password);
-        } 
         
         public void DeleteOwner(string email)
         {
@@ -67,7 +62,14 @@ namespace NET.W._2017.Dubovik._14_15.OwnerService
 
         public Owner GetOwner(string email)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                throw new ArgumentException(nameof(email));
+            }
+
+            var owner = owners.FirstOrDefault(ac => ac.Email == email);
+
+            return owner;
         }
 
         public IEnumerable<Owner> GetOwners()
@@ -81,6 +83,11 @@ namespace NET.W._2017.Dubovik._14_15.OwnerService
         }
 
         #region private
+
+        private static Owner CreateOwner(Type owner, string email, string password)
+        {
+            return (Owner)Activator.CreateInstance(owner, email, password);
+        }
 
         private static void CheckInput(string email, string password)
         {

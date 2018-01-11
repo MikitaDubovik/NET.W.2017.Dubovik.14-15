@@ -109,7 +109,7 @@ namespace ORM
 
             using (var db = new BankContext())
             {
-                db.OwnerAccount.Add(owner);
+                db.OwnerAccounts.Add(owner);
                 db.SaveChanges();
             }
         }

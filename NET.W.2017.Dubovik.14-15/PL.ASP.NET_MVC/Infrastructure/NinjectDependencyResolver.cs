@@ -12,7 +12,9 @@ namespace PL.ASP.NET_MVC.Infrastructure
         public NinjectDependencyResolver()
         {
             _kernel = new StandardKernel(new DependencyModule());
+            _kernel.Unbind<ModelValidatorProvider>();
         }
+
         public object GetService(Type serviceType)
         {
             return _kernel.TryGet(serviceType);

@@ -36,7 +36,8 @@ namespace NET.W._2017.Dubovik._14_15.Mappers
             };
 
         internal static Owner ToBllOwner(this OwnerAccount dalOwner)
-            => (Owner) Activator.CreateInstance(typeof(Owner),
+            => (Owner)Activator.CreateInstance(
+                typeof(Owner),
                 dalOwner.Email,
                 dalOwner.Password);
 
