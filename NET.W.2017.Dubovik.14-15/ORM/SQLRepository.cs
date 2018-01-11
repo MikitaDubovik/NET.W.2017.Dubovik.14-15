@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using DAL.Interface;
 using DAL.Interface.DTO;
+using ORM.DTO;
 
 namespace ORM
 {
@@ -17,7 +18,7 @@ namespace ORM
                 throw new ArgumentNullException(nameof(account));
             }
 
-            using (var db = new BankAccountContext())
+            using (var db = new BankContext())
             {
                 db.BankAccounts.Add(account);
                 db.SaveChanges();
@@ -32,7 +33,7 @@ namespace ORM
                 throw new ArgumentNullException(nameof(id));
             }
 
-            using (var db = new BankAccountContext())
+            using (var db = new BankContext())
             {
                 return db.BankAccounts.Find(id);
             }
@@ -46,7 +47,7 @@ namespace ORM
                 throw new ArgumentNullException(nameof(account));
             }
 
-            using (var db = new BankAccountContext())
+            using (var db = new BankContext())
             {
                 var tempAccount = db.Set<BankAccount>().FirstOrDefault(acc => acc.AccountId == account.AccountId);
                 if (ReferenceEquals(tempAccount, null))
@@ -63,7 +64,7 @@ namespace ORM
         public IEnumerable<BankAccount> GetAccounts()
         {
             var accounts = new List<BankAccount>();
-            using (var db = new BankAccountContext())
+            using (var db = new BankContext())
             {
                 accounts.AddRange(db.Set<BankAccount>());
             }
@@ -74,7 +75,7 @@ namespace ORM
         /// <inheritdoc />
         public void UpdateAccount(BankAccount account)
         {
-            using (var db = new BankAccountContext())
+            using (var db = new BankContext())
             {
                 var temp = GetAccount(account.AccountId);
                 if (temp == null)
@@ -84,6 +85,31 @@ namespace ORM
 
                 temp = account;
                 db.Entry(temp).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+        }
+
+        public IEnumerable<OwnerAccount> GetOwners()
+        {
+            var owners = new List<OwnerAccount>();
+            using (var db = new BankContext())
+            {
+                owners.AddRange(db.Set<OwnerAccount>());
+            }
+
+            return owners;
+        }
+
+        public void AddOwner(OwnerAccount owner)
+        {
+            if (owner == null)
+            {
+                throw new ArgumentNullException(nameof(owner));
+            }
+
+            using (var db = new BankContext())
+            {
+                db.OwnerAccount.Add(owner);
                 db.SaveChanges();
             }
         }

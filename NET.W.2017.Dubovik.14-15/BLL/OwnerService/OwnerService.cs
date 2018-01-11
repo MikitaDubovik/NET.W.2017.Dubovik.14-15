@@ -4,6 +4,7 @@ using System.Linq;
 using BLL.Interface;
 using BLL.Interface.Owners;
 using DAL.Interface;
+using NET.W._2017.Dubovik._14_15.Mappers;
 
 namespace NET.W._2017.Dubovik._14_15.OwnerService
 {
@@ -45,7 +46,7 @@ namespace NET.W._2017.Dubovik._14_15.OwnerService
             {
                 var owner = CreateOwner(typeof(Owner), email, password);
                 owners.Add(owner);
-                accountRepository.AddOwner(owner);
+                accountRepository.AddOwner(owner.ToOwnerAccount());
             }
             catch (Exception e)
             {

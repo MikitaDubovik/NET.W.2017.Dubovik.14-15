@@ -1,11 +1,11 @@
 ﻿using System.Data.Entity;
 using DAL.Interface.DTO;
 
-namespace ORM
+namespace ORM.DTO
 {
-    public class BankAccountContext : DbContext
+    public class BankContext : DbContext
     {
-        public BankAccountContext() : base("Accounts")
+        public BankContext() : base("Accounts")
         {
         }
 

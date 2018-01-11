@@ -15,7 +15,7 @@ namespace DAL
 
         private readonly string filePath;
         private readonly List<BankAccount> accounts = new List<BankAccount>();
-
+        private readonly List<OwnerAccount> owners = new List<OwnerAccount>();
         #endregion
 
         #region public
@@ -134,7 +134,14 @@ namespace DAL
                 throw new InvalidOperationException("Something wrong with updating", e);
             }
         }
-        
+
+        public IEnumerable<OwnerAccount> GetOwners() => owners.ToArray();
+
+        public void AddOwner(OwnerAccount owner)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <inheritdoc />
         public IEnumerable<BankAccount> GetAccounts() => accounts.ToArray();
 

@@ -20,10 +20,11 @@ namespace PL.ASP.NET_MVC
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-            var registrations = new NinjectRegistrations();
-            var kernel = new StandardKernel(registrations);
-            kernel.Unbind<ModelValidatorProvider>();
-            System.Web.Mvc.DependencyResolver.SetResolver(new NinjectDependencyResolver(kernel));
+            //var registrations = new DependencyModule();
+            //var kernel = new StandardKernel(registrations);
+            //kernel.Unbind<ModelValidatorProvider>();
+            //System.Web.Mvc.DependencyResolver.SetResolver(new NinjectDependencyResolver(kernel));
+            DependencyResolver.SetResolver(new NinjectDependencyResolver());
         }
 
         protected void Application_EndRequest()

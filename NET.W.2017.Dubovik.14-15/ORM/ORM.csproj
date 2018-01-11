@@ -40,7 +40,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DTO\BankAccountContext.cs" />
+    <Compile Include="DTO\BankContext.cs" />
     <Compile Include="SQLRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

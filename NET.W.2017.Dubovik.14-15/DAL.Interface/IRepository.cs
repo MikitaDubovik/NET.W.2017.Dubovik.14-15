@@ -38,5 +38,17 @@ namespace DAL.Interface
         /// </summary>
         /// <param name="account">Account which you want to update</param>
         void UpdateAccount(BankAccount account);
+
+        /// <summary>
+        /// Returns all owners stored in the repository.
+        /// </summary>
+        /// <returns>All owners contained in the repository.</returns>
+        IEnumerable<OwnerAccount> GetOwners();
+
+        /// <summary>
+        /// Adds <paramref name="owner"/> to the repository
+        /// </summary>
+        /// <param name="owner">Owner which you want to add</param>
+        void AddOwner(OwnerAccount owner);
     }
 }

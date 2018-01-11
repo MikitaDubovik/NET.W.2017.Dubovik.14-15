@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using System.Web.Mvc;
 using System.Web.Helpers;
 using System.Web.Security;
 using BLL.Interface;
@@ -66,12 +66,7 @@ namespace PL.ASP.NET_MVC.Providers
 
         #endregion
 
-        private readonly IOwnerService ownerService;
-
-        public CustomMembershipProvider(IOwnerService ownerService)
-        {
-            this.ownerService = ownerService;
-        }
+        private  IOwnerService ownerService => (IOwnerService)DependencyResolver.Current.GetService(typeof(IOwnerService));
 
         public MembershipUser CreateUser(string email, string password)
         {

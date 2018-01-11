@@ -1,5 +1,6 @@
 ﻿using System;
 using BLL.Interface.Accounts;
+using BLL.Interface.Owners;
 using DAL.Interface.DTO;
 using NET.W._2017.Dubovik._14_15.Levels;
 
@@ -15,7 +16,7 @@ namespace NET.W._2017.Dubovik._14_15.Mappers
                 OwnerFirstName = account.OwnerFirstName,
                 OwnerSecondName = account.OwnerSecondName,
                 CurrentSum = account.CurrentSum,
-                BonusPoints = account.BonusPoints,
+                BonusPoints = account.BonusPoints
             };
 
         internal static Account ToBllAccount(this BankAccount dalAccount)
@@ -26,6 +27,18 @@ namespace NET.W._2017.Dubovik._14_15.Mappers
                 dalAccount.OwnerSecondName,
                 dalAccount.CurrentSum,
                 dalAccount.BonusPoints);
+
+        internal static OwnerAccount ToOwnerAccount(this Owner owner) =>
+            new OwnerAccount()
+            {
+                Email = owner.Email,
+                Password = owner.Password
+            };
+
+        internal static Owner ToBllOwner(this OwnerAccount dalOwner)
+            => (Owner) Activator.CreateInstance(typeof(Owner),
+                dalOwner.Email,
+                dalOwner.Password);
 
         private static Type GetAccountType(string type)
         {

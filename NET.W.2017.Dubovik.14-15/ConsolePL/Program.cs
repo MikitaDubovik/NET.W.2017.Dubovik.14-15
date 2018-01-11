@@ -13,7 +13,7 @@ namespace ConsolePL
         static Program()
         {
             NinjectKernel = new StandardKernel();
-            AccountDependencyResolver.Configure(NinjectKernel);
+            BankDependencyResolver.Configure(NinjectKernel);
         }
 
         public static void Main(string[] args)

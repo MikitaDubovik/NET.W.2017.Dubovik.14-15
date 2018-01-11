@@ -146,7 +146,8 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\InformationController.cs" />
-    <Compile Include="DependencyResolver\NinjectRegistrations.cs" />
+    <Compile Include="Infrastructure\DependencyModule.cs" />
+    <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

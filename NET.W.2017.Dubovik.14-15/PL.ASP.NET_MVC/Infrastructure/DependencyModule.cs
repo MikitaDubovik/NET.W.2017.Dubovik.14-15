@@ -7,9 +7,9 @@ using Ninject.Modules;
 
 namespace PL.ASP.NET_MVC.DependencyResolver
 {
-    public class NinjectRegistrations : NinjectModule
+    public class DependencyModule : NinjectModule
     {
         public override void Load() =>
-            AccountDependencyResolver.Configure(this.Kernel);
+            BankDependencyResolver.Configure(this.Kernel);
     }
 }
