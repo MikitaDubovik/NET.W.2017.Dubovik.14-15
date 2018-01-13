@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Web.Helpers;
 using System.Web.Security;
 using BLL.Interface;
+using BLL.Interface.Owners;
 
 namespace PL.ASP.NET_MVC.Providers
 {
@@ -74,14 +76,14 @@ namespace PL.ASP.NET_MVC.Providers
                 return null;
             }
 
-            this.OwnerService.RegisterOwner(email, Crypto.HashPassword(password));
+            this.RegisterOwner(email, Crypto.HashPassword(password));
             membershipUser = this.GetUser(email, false);
             return membershipUser;
         }
 
         public override bool ValidateUser(string email, string password)
         {
-            var owner = this.OwnerService.GetOwner(email);
+            Owner owner = this.GetOwner(email).Result;
 
             if (owner != null && Crypto.VerifyHashedPassword(owner.Password, password))
             {
@@ -93,7 +95,7 @@ namespace PL.ASP.NET_MVC.Providers
 
         public override MembershipUser GetUser(string email, bool userIsOnline)
         {
-            var owner = this.OwnerService.GetOwner(email);
+            Owner owner = this.GetOwner(email).Result;
 
             if (owner == null)
             {
@@ -201,6 +203,22 @@ namespace PL.ASP.NET_MVC.Providers
             throw new NotImplementedException();
         }
 
-        #endregion     
+        #endregion
+
+        #region private
+
+        private async Task<Owner> GetOwner(string email)
+        {
+            var owner = await Task.Run(() => this.OwnerService.GetOwner(email));
+
+            return owner;
+        }
+        
+        private async Task RegisterOwner(string email, string password)
+        {
+            await Task.Run(() => this.OwnerService.RegisterOwner(email, Crypto.HashPassword(password)));
+        }
+
+        #endregion
     }
 }

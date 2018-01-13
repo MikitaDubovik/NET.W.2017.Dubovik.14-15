@@ -116,7 +116,7 @@ namespace NET.W._2017.Dubovik._14_15.AccountService
                 throw new InvalidOperationException("The specified account isn't found");
             }
 
-            return account.ToString();
+            return account.CurrentSum.ToString();
         }
 
         /// <inheritdoc />

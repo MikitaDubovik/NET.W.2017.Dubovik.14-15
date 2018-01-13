@@ -16,12 +16,6 @@ namespace BLL.Interface
         void RegisterOwner(string email, string password);
 
         /// <summary>
-        /// Deletes owner with a specific <paramref name="email"/>
-        /// </summary>
-        /// <param name="email"></param>
-        void DeleteOwner(string email);
-
-        /// <summary>
         /// Returns owner with a specific <paramref name="email"/>
         /// </summary>
         /// <param name="email"></param>

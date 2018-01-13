@@ -2,6 +2,7 @@
 using System.Drawing.Imaging;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Web.Security;
 using BLL.Interface;
@@ -72,11 +73,10 @@ namespace PL.ASP.NET_MVC.Controllers
             return this.View();
         }
 
-        //// TO DO async
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ActionResult Register(RegisterViewModel viewModel)
+        public async Task<ActionResult> Register(RegisterViewModel viewModel)
         {
             if (viewModel.Captcha != (string)Session[CaptchaImage.CaptchaValueKey])
             {
@@ -84,7 +84,7 @@ namespace PL.ASP.NET_MVC.Controllers
                 return this.View(viewModel);
             }
 
-            var anyUser = this.ownerService.GetOwners().Any(u => u.Email.Contains(viewModel.Email));
+            var anyUser = await Task.Run(() => this.ownerService.GetOwners().Any(u => u.Email.Contains(viewModel.Email)));
 
             if (anyUser)
             {
@@ -94,8 +94,8 @@ namespace PL.ASP.NET_MVC.Controllers
 
             if (ModelState.IsValid)
             {
-                var membershipUser = ((CustomMembershipProvider)Membership.Provider)
-                    .CreateUser(viewModel.Email, viewModel.Password);
+                var membershipUser = await Task.Run(() => ((CustomMembershipProvider)Membership.Provider)
+                    .CreateUser(viewModel.Email, viewModel.Password));
 
                 if (membershipUser != null)
                 {

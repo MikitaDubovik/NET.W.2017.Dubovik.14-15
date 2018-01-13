@@ -38,6 +38,7 @@ namespace NET.W._2017.Dubovik._14_15.OwnerService
             }
         }
 
+        /// <inheritdoc />
         public void RegisterOwner(string email, string password)
         {
             CheckInput(email, password);
@@ -54,12 +55,8 @@ namespace NET.W._2017.Dubovik._14_15.OwnerService
                 throw;
             }
         }
-        
-        public void DeleteOwner(string email)
-        {
-            throw new NotImplementedException();
-        }
 
+        /// <inheritdoc />
         public Owner GetOwner(string email)
         {
             if (string.IsNullOrWhiteSpace(email))
@@ -72,6 +69,7 @@ namespace NET.W._2017.Dubovik._14_15.OwnerService
             return owner;
         }
 
+        /// <inheritdoc />
         public IEnumerable<Owner> GetOwners()
         {
             if (ReferenceEquals(owners, null))

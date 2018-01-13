@@ -236,6 +236,10 @@
     <Content Include="Views\Auth\Register.cshtml" />
     <Content Include="Views\Information\Contact.cshtml" />
     <Content Include="Views\Information\About.cshtml" />
+    <Content Include="Views\Shared\_HasMoney.cshtml" />
+    <Content Include="Views\Shared\_HasCredit.cshtml" />
+    <Content Include="Views\Account\HasCredit.cshtml" />
+    <Content Include="Views\Account\HasMoney.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

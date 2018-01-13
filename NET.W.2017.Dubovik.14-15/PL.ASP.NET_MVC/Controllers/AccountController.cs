@@ -8,7 +8,7 @@ using PL.ASP.NET_MVC.ViewModels.AccountOperations;
 
 namespace PL.ASP.NET_MVC.Controllers
 {
-    ////[Authorize]
+    [Authorize]
     public class AccountController : Controller
     {
         private static string currentId;
@@ -61,19 +61,19 @@ namespace PL.ASP.NET_MVC.Controllers
             return this.View();
         }
 
-        public ActionResult Withdraw()
+        public Task<ActionResult> Withdraw()
         {
             currentOperation = "Withdraw";
             return this.ActiveOperation();
         }
 
-        public ActionResult Deposite()
+        public Task<ActionResult> Deposite()
         {
             currentOperation = "Deposite";
             return this.ActiveOperation();
         }
 
-        public ActionResult Close()
+        public Task<ActionResult> Close()
         {
             currentOperation = "Close";
             return this.ActiveOperation();
@@ -94,13 +94,13 @@ namespace PL.ASP.NET_MVC.Controllers
         }
 
         [HttpPost]
-        public ActionResult EndMoneyOperation(MoneyOperations bank)
+        public Task<ActionResult> EndMoneyOperation(MoneyOperations bank)
         {
             return this.End(bank);
         }
 
         [HttpPost]
-        public ActionResult EndCloseOperation(CloseOperation bank)
+        public Task<ActionResult> EndCloseOperation(CloseOperation bank)
         {
             return this.End(bank);
         }
@@ -108,7 +108,7 @@ namespace PL.ASP.NET_MVC.Controllers
         public ActionResult Transfer() => this.View();
 
         [HttpPost]
-        private ActionResult End(IOperationModel bank)
+        private async Task<ActionResult> End(IOperationModel bank)
         {
             if (!ModelState.IsValid)
             {
@@ -123,45 +123,85 @@ namespace PL.ASP.NET_MVC.Controllers
                 }
             }
 
-            switch (currentOperation)
+            if (currentOperation == "Close")
             {
-                case "Withdraw":
-                    this.accountService.WithdrawMoney(currentId, Convert.ToDecimal(bank.Sum));
-                    break;
-                case "Deposite":
-                    this.accountService.DepositMoney(currentId, Convert.ToDecimal(bank.Sum));
-                    break;
-                case "Close":
-                    this.accountService.CloseAccount(currentId);
-                    break;
+                await this.EndCloseOperation();
+            }
+            else
+            {
+                switch (currentOperation)
+                {
+                    case "Withdraw":
+                        await Task.Run(() => this.accountService.WithdrawMoney(currentId, Convert.ToDecimal(bank.Sum)));
+                        break;
+                    case "Deposite":
+                        await Task.Run(() => this.accountService.DepositMoney(currentId, Convert.ToDecimal(bank.Sum)));
+                        break;
                     default:
                         break;
+                }
+
+                if (Request.IsAjaxRequest())
+                {
+                    return this.PartialView("_OperationSuccessfullyComplete");
+                }
+
+                return this.View("OperationSuccessfullyComplete");
             }
 
-            if (Request.IsAjaxRequest())
-            {
-                return this.PartialView("_OperationSuccessfullyComplete");
-            }
-
-            return this.View("OperationSuccessfullyComplete");
+            return this.View("NotValidData");
         }
 
-        private ActionResult ActiveOperation()
+        private async Task<ActionResult> EndCloseOperation()
         {
-            var accounts = this.accountService.GetAccounts().Select(a => new MoneyOperations()
+            decimal currentSum;
+            decimal.TryParse(this.accountService.GetAccountStatus(currentId), out currentSum);
+            if (currentSum > 0)
+            {
+                if (Request.IsAjaxRequest())
+                {
+                    return this.PartialView("_HasMoney");
+                }
+
+                return this.View("HasMoney");
+            }
+            else if (currentSum < 0)
+            {
+                if (Request.IsAjaxRequest())
+                {
+                    return this.PartialView("_HasCredit");
+                }
+
+                return this.View("HasCredit");
+            }
+            else
+            {
+                await Task.Run(() => this.accountService.CloseAccount(currentId));
+                if (Request.IsAjaxRequest())
+                {
+                    return this.PartialView("_OperationSuccessfullyComplete");
+                }
+
+                return this.View("OperationSuccessfullyComplete");
+            }
+        }
+
+        private async Task<ActionResult> ActiveOperation()
+        {
+            var accounts = await Task.Run(() => this.accountService.GetAccounts().Select(a => new MoneyOperations()
             {
                 Id = a.Id,
                 Sum = a.CurrentSum.ToString(),
-                Type = this.GetTypeOfAccount(a.Id)
-            });
+                Type = this.GetTypeOfAccount(a.Id).ToString()
+            }));
 
             ViewBag.OperationName = currentOperation;
             return this.View("ViewTable", accounts);
         }
 
-        private string GetTypeOfAccount(string id)
+        private async Task<string> GetTypeOfAccount(string id)
         {
-            string temp = this.accountService.GetTypeOfAccount(id);
+            string temp = await Task.Run(() => this.accountService.GetTypeOfAccount(id));
             string[] tempArray = temp.Split('.');
             switch (tempArray.Last())
             {
