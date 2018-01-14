@@ -44,6 +44,8 @@ namespace PL.ASP.NET_MVC.Controllers
                 account.OwnerSecondName,
                 decimal.Parse(account.Sum)));
 
+            ////User.Identity.Name;
+
             this.TempData["isAccountOpened"] = true;
             return this.RedirectToAction(nameof(this.AccountSuccessfullyOpened));
         }
@@ -106,53 +108,8 @@ namespace PL.ASP.NET_MVC.Controllers
         }
 
         public ActionResult Transfer() => this.View();
-
-        [HttpPost]
-        private async Task<ActionResult> End(IOperationModel bank)
-        {
-            if (!ModelState.IsValid)
-            {
-                this.TempData["isError"] = true;
-                if (Request.IsAjaxRequest())
-                {
-                    return this.PartialView("_NotValidData");
-                }
-                else
-                {
-                    return this.View("NotValidData");
-                }
-            }
-
-            if (currentOperation == "Close")
-            {
-                await this.EndCloseOperation();
-            }
-            else
-            {
-                switch (currentOperation)
-                {
-                    case "Withdraw":
-                        await Task.Run(() => this.accountService.WithdrawMoney(currentId, Convert.ToDecimal(bank.Sum)));
-                        break;
-                    case "Deposite":
-                        await Task.Run(() => this.accountService.DepositMoney(currentId, Convert.ToDecimal(bank.Sum)));
-                        break;
-                    default:
-                        break;
-                }
-
-                if (Request.IsAjaxRequest())
-                {
-                    return this.PartialView("_OperationSuccessfullyComplete");
-                }
-
-                return this.View("OperationSuccessfullyComplete");
-            }
-
-            return this.View("NotValidData");
-        }
-
-        private async Task<ActionResult> EndCloseOperation()
+        
+        public async Task<ActionResult> EndCloseOperation()
         {
             decimal currentSum;
             decimal.TryParse(this.accountService.GetAccountStatus(currentId), out currentSum);
@@ -179,11 +136,52 @@ namespace PL.ASP.NET_MVC.Controllers
                 await Task.Run(() => this.accountService.CloseAccount(currentId));
                 if (Request.IsAjaxRequest())
                 {
-                    return this.PartialView("_OperationSuccessfullyComplete");
+                    return this.PartialView("_OperationSuccessfullyCompleted");
                 }
 
-                return this.View("OperationSuccessfullyComplete");
+                return this.View("OperationSuccessfullyCompleted");
             }
+        }
+
+        [HttpPost]
+        private async Task<ActionResult> End(IOperationModel bank)
+        {
+            if (!ModelState.IsValid)
+            {
+                this.TempData["isError"] = true;
+                if (Request.IsAjaxRequest())
+                {
+                    return this.PartialView("_NotValidData");
+                }
+                else
+                {
+                    return this.View("NotValidData");
+                }
+            }
+
+            if (currentOperation != "Close")
+            {
+                switch (currentOperation)
+                {
+                    case "Withdraw":
+                        await Task.Run(() => this.accountService.WithdrawMoney(currentId, Convert.ToDecimal(bank.Sum)));
+                        break;
+                    case "Deposite":
+                        await Task.Run(() => this.accountService.DepositMoney(currentId, Convert.ToDecimal(bank.Sum)));
+                        break;
+                    default:
+                        break;
+                }
+
+                if (Request.IsAjaxRequest())
+                {
+                    return this.PartialView("_OperationSuccessfullyCompleted");
+                }
+
+                return this.View("OperationSuccessfullyCompleted");
+            }
+
+            return this.RedirectToAction("EndCloseOperation");
         }
 
         private async Task<ActionResult> ActiveOperation()
@@ -192,16 +190,16 @@ namespace PL.ASP.NET_MVC.Controllers
             {
                 Id = a.Id,
                 Sum = a.CurrentSum.ToString(),
-                Type = this.GetTypeOfAccount(a.Id).ToString()
+                Type = this.GetTypeOfAccount(a.Id)
             }));
 
             ViewBag.OperationName = currentOperation;
             return this.View("ViewTable", accounts);
         }
 
-        private async Task<string> GetTypeOfAccount(string id)
+        private string GetTypeOfAccount(string id)
         {
-            string temp = await Task.Run(() => this.accountService.GetTypeOfAccount(id));
+            string temp = this.accountService.GetTypeOfAccount(id);
             string[] tempArray = temp.Split('.');
             switch (tempArray.Last())
             {

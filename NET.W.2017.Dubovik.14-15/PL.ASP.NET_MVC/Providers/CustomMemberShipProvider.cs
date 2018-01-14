@@ -76,14 +76,14 @@ namespace PL.ASP.NET_MVC.Providers
                 return null;
             }
 
-            this.RegisterOwner(email, Crypto.HashPassword(password));
+            this.OwnerService.RegisterOwner(email, Crypto.HashPassword(password));
             membershipUser = this.GetUser(email, false);
             return membershipUser;
         }
 
         public override bool ValidateUser(string email, string password)
         {
-            Owner owner = this.GetOwner(email).Result;
+            Owner owner = this.OwnerService.GetOwner(email);
 
             if (owner != null && Crypto.VerifyHashedPassword(owner.Password, password))
             {
@@ -95,7 +95,7 @@ namespace PL.ASP.NET_MVC.Providers
 
         public override MembershipUser GetUser(string email, bool userIsOnline)
         {
-            Owner owner = this.GetOwner(email).Result;
+            Owner owner = this.OwnerService.GetOwner(email);
 
             if (owner == null)
             {
@@ -201,22 +201,6 @@ namespace PL.ASP.NET_MVC.Providers
             string newPasswordAnswer)
         {
             throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #region private
-
-        private async Task<Owner> GetOwner(string email)
-        {
-            var owner = await Task.Run(() => this.OwnerService.GetOwner(email));
-
-            return owner;
-        }
-        
-        private async Task RegisterOwner(string email, string password)
-        {
-            await Task.Run(() => this.OwnerService.RegisterOwner(email, Crypto.HashPassword(password)));
         }
 
         #endregion

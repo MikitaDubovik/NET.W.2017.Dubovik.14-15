@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
-using Ninject;
-using Ninject.Web.Mvc;
 
 namespace PL.ASP.NET_MVC
 {
@@ -20,6 +14,8 @@ namespace PL.ASP.NET_MVC
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
             System.Web.Mvc.DependencyResolver.SetResolver(new Infrastructure.NinjectDependencyResolver());
+
+            ModelValidatorProviders.Providers.Clear();
         }
 
         protected void Application_EndRequest()
